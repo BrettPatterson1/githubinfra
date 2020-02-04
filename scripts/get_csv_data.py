@@ -28,8 +28,12 @@ def get_netid(email):
     return email.split("@")[0]
 
 def get_assignments(student):
-    print("hello")
-
+    assessments = student['assessments']
+    all_grades = []
+    for hw in assessments:
+        label = hw['assessment_label']
+        name = hw['assessment_name']
+        
 def extract_relevant_data(students):
     for student in students:
         netid = get_netid('user_uid')
