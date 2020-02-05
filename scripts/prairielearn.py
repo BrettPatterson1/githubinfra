@@ -13,7 +13,6 @@ def get_grades_from_prairielearn():
     url = "https://prairielearn.engr.illinois.edu/pl/api/v1/course_instances/53634/gradebook"
 
     r = requests.get(url, headers=header)
-    print(r.json())
     return r.json()
 
 
@@ -35,16 +34,35 @@ def get_assignments(student):
     for hw in assessments:
         label = hw['assessment_label']
         name = hw['assessment_name']
+        points = hw['points']
+        max_points = hw['max_points']
+        percentage = hw['score_perc']
+        assignment = (label, name, points, max_points, percentage)
+        all_grades.append(assignment)
+    sorted_grades = sorted(all_grades, key=lambda x: x[0])
+    return sorted_grades
         
 def extract_relevant_data(students):
+    profiles = []
     for student in students:
         netid = get_netid('user_uid')
+        grades = get_assignments(student)
+        profile = (netid, grades)
+        profiles.append(profile)
+    return profiles
 
+#Returns nested list [netid, grades]
+def grab_grades():
+    gradebook = get_grades_from_prairielearn()
+    students = filter_out_instructors(gradebook)
+    student_info = extract_relevant_data(students)
+    return student_info
 
 def main():
     gradebook = get_grades_from_prairielearn()
     students = filter_out_instructors(gradebook)
     student_info = extract_relevant_data(students)
+    print(student_info)
 
 if __name__ == "__main__":
     main()
