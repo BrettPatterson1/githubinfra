@@ -1,0 +1,9 @@
+/venv
+.idea/
+scripts/config.py
+scripts/__pycache__/config.cpython-38.pyc
+__pycache__/
+*.pc
+*.pyc
+*.pyo
+__pycache__
