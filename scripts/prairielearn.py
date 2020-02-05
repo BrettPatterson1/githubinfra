@@ -45,7 +45,7 @@ def get_assignments(student):
 def extract_relevant_data(students):
     profiles = []
     for student in students:
-        netid = get_netid('user_uid')
+        netid = get_netid(student['user_uid'])
         grades = get_assignments(student)
         profile = (netid, grades)
         profiles.append(profile)
