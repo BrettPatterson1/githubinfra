@@ -19,14 +19,14 @@ def get_grades_from_prairielearn():
 def filter_out_instructors(gradebook):
     just_students = []
     for i in range(len(gradebook)):
-        if gradebook[i]['user_role'] == 'Instructor':
+        if (gradebook[i]['user_role'] == 'Instructor' or gradebook[i]['user_role'] == "TA"):
             continue
         just_students.append(gradebook[i])
     return just_students
 
 
 def get_netid(email):
-    return email.split("@")[0]
+    return email.split("@")[0].strip().lower()
 
 def get_assignments(student):
     assessments = student['assessments']
@@ -43,12 +43,14 @@ def get_assignments(student):
     return sorted_grades
         
 def extract_relevant_data(students):
-    profiles = []
+    profiles = {}
     for student in students:
         netid = get_netid(student['user_uid'])
         grades = get_assignments(student)
-        profile = (netid, grades)
-        profiles.append(profile)
+        profile = {
+            "grades": grades
+        }
+        profiles[netid] = profile
     return profiles
 
 #Returns nested list [netid, grades]

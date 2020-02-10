@@ -2,8 +2,10 @@ import requests
 import csv
 import json
 import config
+import os
 
-data=r"C:\Users\brett\OneDrive\Desktop\githubinfra\data\netid_github_sp20.csv"
+
+data=r"/mnt/c/users/brett/onedrive/desktop/githubinfra/data/netid_github_sp20.csv"
 REPO_FORMAT=config.REPO_FORMAT
 GITHUB_TOKEN=config.GITHUB_TOKEN
 GITHUB_ORGANIZATION="CS196Illinois"
@@ -11,18 +13,18 @@ GITHUB_USERNAME="BrettPatterson1"
 HEADERS = {"Authorization": "token {}".format(config.GITHUB_TOKEN)}
 
 def read_csv(filename):
+    print(os.getcwd())
     with open(filename, "r") as f:
         csv_reader = csv.reader(f)
-
         next(csv_reader) # skip heading
         all_students = set() #to skip duplicate forms
         #Might have to change based on your data
         for line in csv_reader:
-            netid = line[2].strip()
+            netid = line[2].strip().lower()
             github = line[3].strip()
             all_students.add((netid, github))
 
-        return all_students
+    return all_students
 
 # Realized organization is owner
 def repo_exists(owner, repo_name):
@@ -86,8 +88,10 @@ def make_all_repos(students):
         github = student[1]
         repo_name = REPO_FORMAT.format(netid)
         if repo_exists(GITHUB_ORGANIZATION, REPO_FORMAT.format(netid)):
+            print("{} already exists".format(REPO_FORMAT.format(netid)))
             continue
         else:
+            print("{} doesn't exist... Creating".format(REPO_FORMAT.format(netid)))
             create_repo(repo_name=repo_name, netid=netid)
             add_collaborator(GITHUB_ORGANIZATION, repo_name=repo_name, github_username=github)
 
