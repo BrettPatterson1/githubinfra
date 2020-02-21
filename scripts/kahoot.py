@@ -65,6 +65,7 @@ def read_csv(filename):
     with open(filename, "r") as f:
         csv_reader = csv.reader(f)
         all_students = set() #to skip duplicate forms
+        winners = set()
         i = 0
         for line in csv_reader:
             if i == 0:
@@ -74,10 +75,13 @@ def read_csv(filename):
             elif i < 3:
                 i+=1
                 continue
-            i+=1
             netid = line[1].strip().lower()
+            if i < 8:
+                winners.add(netid)
+            i+=1
             all_students.add(netid)
     attendance["netids"] = all_students
+    attendance["winners"] = winners
     return attendance
 
 def get_all_attendance():

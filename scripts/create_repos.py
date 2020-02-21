@@ -5,7 +5,7 @@ import config
 import os
 
 
-data=r"/mnt/c/users/brett/onedrive/desktop/githubinfra/data/netid_github_sp20.csv"
+data=r"C:\Users\brett\OneDrive\Desktop\githubinfra\data\NetIDs and Github.csv"
 REPO_FORMAT=config.REPO_FORMAT
 GITHUB_TOKEN=config.GITHUB_TOKEN
 GITHUB_ORGANIZATION="CS196Illinois"

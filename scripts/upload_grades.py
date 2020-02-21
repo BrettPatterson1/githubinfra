@@ -7,6 +7,7 @@ import kahoot
 
 REPO_FORMAT=config.REPO_FORMAT
 GITHUB_ORGANIZATION="CS196Illinois"
+WinnerLectures = ("Rust 1", "Rust 2")
 
 def push_all_grades(students):
     call('git config --global credential.helper cache', shell=True)
@@ -57,10 +58,14 @@ def add_attendance(students, lecture_attendance):
     for netid in students:
         lecture_presence = []
         for lecture in lecture_attendance:
+            note = ""
             if netid in lecture["netids"]:
-                lecture_presence.append("Lecture: {} Attended".format(lecture['name']))
+                note += "Lecture: {} Attended ".format(lecture['name'])
             else:
-                lecture_presence.append("Lecture: {} Absent".format(lecture['name']))
+                note += "Lecture: {} Absent ".format(lecture['name'])
+            if lecture['name'] in WinnerLectures and netid in lecture["winners"]:
+                note += "Winner! +1% Extra Credit"
+            lecture_presence.append(note)
         students[netid]["attendance"] = lecture_presence
 
 def main():
