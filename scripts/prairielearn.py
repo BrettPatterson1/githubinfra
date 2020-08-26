@@ -53,11 +53,23 @@ def extract_relevant_data(students):
         profiles[netid] = profile
     return profiles
 
-#Returns nested list [netid, grades]
+def add_extra_credit(students):
+    for netid in students:
+        profile = students[netid]
+        profile["extra_credit"] = 0
+        for assignment in profile["grades"]:
+            label, name, points, max_points, percentage = assignment
+            if percentage is not None and percentage == 110:
+                profile["extra_credit"] += 1
+
+    return students
+
+# Returns dictionary netid: profile: grades
 def grab_grades():
     gradebook = get_grades_from_prairielearn()
     students = filter_out_instructors(gradebook)
     student_info = extract_relevant_data(students)
+    student_info = add_extra_credit(student_info)
     return student_info
 
 def main():

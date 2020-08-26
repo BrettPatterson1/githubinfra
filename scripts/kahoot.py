@@ -86,9 +86,10 @@ def read_csv(filename):
 
 def get_all_attendance():
     files = get_filenames(".csv")
-    all_attendance = []
+    all_attendance = {}
     for file in files:
-        all_attendance.append(read_csv(file))
+        lecture_info = read_csv(file)
+        all_attendance[lecture_info['name']] = lecture_info
     return all_attendance
 
 def main():
